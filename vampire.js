@@ -9,17 +9,17 @@ class Vampire {
   // Returns the vampire object with that name, or null if no vampire exists with that name
 
   vampireWithName(name) {
-    function fineVampireWithName(vampire, name) {
+    function findVampireWithName(vampire, name) {
       if (vampire.name === name) {
         return vampire;
       }
       for (const offspring of vampire.offspring) {
-        const foundVampire = fineVampireWithName(offspring, name);
+        const foundVampire = findVampireWithName(offspring, name);
         if (foundVampire) return foundVampire;
       }
       return null;
     }
-    return fineVampireWithName(this, name);
+    return findVampireWithName(this, name);
   }
 
   // Returns the total number of vampires that exist
