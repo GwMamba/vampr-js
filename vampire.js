@@ -6,39 +6,50 @@ class Vampire {
     this.creator = null;
   }
 
-  /** Simple tree methods **/
+  // Returns the vampire object with that name, or null if no vampire exists with that name
 
-  // Adds the vampire as an offspring of this vampire
-  addOffspring(vampire) {
-
+  vampireWithName(name) {
+    function fineVampireWithName(vampire, name) {
+      if (vampire.name === name) {
+        return vampire;
+      }
+      for (const offspring of vampire.offspring) {
+        const foundVampire = fineVampireWithName(offspring, name);
+        if (foundVampire) return foundVampire;
+      }
+      return null;
+    }
+    return fineVampireWithName(this, name);
   }
 
-  // Returns the total number of vampires created by that vampire
-  get numberOfOffspring() {
-
+  // Returns the total number of vampires that exist
+  get totalDescendents() {
+    function countDescendants(vampire) {
+      let count = vampire.offspring.length;
+      for (const offspring of vampire.offspring) {
+        count += countDescendants(offspring);
+      }
+      return count;
+    }
+    return countDescendants(this);
   }
 
-  // Returns the number of vampires away from the original vampire this vampire is
-  get numberOfVampiresFromOriginal() {
-
-  }
-
-  // Returns true if this vampire is more senior than the other vampire. (Who is closer to the original vampire)
-  isMoreSeniorThan(vampire) {
-
-  }
-
-  /** Stretch **/
-
-  // Returns the closest common ancestor of two vampires.
-  // The closest common anscestor should be the more senior vampire if a direct ancestor is used.
-  // For example:
-  // * when comparing Ansel and Sarah, Ansel is the closest common anscestor.
-  // * when comparing Ansel and Andrew, Ansel is the closest common anscestor.
-  closestCommonAncestor(vampire) {
-
+  // Returns an array of all the vampires that were converted after 1980
+  get allMillennialVampires() {
+    function findMillenialVamps(vampire) {
+      let millennialVampires = [];
+      if (vampire.yearConverted > 1980) {
+        millennialVampires.push(vampire);
+      }
+      for (const offspring of vampire.offspring) {
+        millennialVampires = millennialVampires.concat(findMillenialVamps(offspring));
+      }
+      return millennialVampires;
+    }
+    return findMillenialVamps(this);
   }
 }
+
 
 module.exports = Vampire;
 
